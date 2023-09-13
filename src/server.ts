@@ -1,9 +1,17 @@
-import "reflect-metadata";
-import express from "express";
-import "./database";
+import 'dotenv/config'
+import { setCharacters } from './database'
 
-const app = express();
+const express = require('express')
+const app = express()
+const port = 3000
 
 
-app.listen(3000, () => console.log("Server is running"));
+app.get('/', async (req, res) => {
+  res.send(await setCharacters())
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+  fetch 
+})
 
