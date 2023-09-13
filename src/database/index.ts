@@ -1,6 +1,5 @@
 import pg from "pg"
 
-
 export const getCharacters = async () => {
     try {
         const client = new pg.Client({
@@ -41,5 +40,6 @@ export const setCharacters = async () => {
     const response = await fetch('https://rickandmortyapi.com/api/character')
     const characters = response.json()
     return(characters)
+
 }
  
