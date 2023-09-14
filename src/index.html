@@ -5,21 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css\style.css">
     <link rel="assets" href=".\assets\logo.svg" type="image/x-icon">
+    <!-- <script src="./ts/app.ts"></script> -->
+
     <title>Rick Morty - Characters</title>
 </head>
 <body>
     <div class="container">
         <header>
             <img src=".\assets\logo.svg" alt="">
+
+            <input type="text" placeholder="Character ID" id="characterConsult">
+
             <div class="button-list">
-                <button class="button"><a href="#">Show Characters</a></button>
-                <button class="button"><a href="#">Add New Character</a></button>
-                <button class="button"><a href="#">Update a Character</a></button>
-                <button class="button"><a href="#">Delete a Character</a></button>
+                <button type="button" id="showCharactersButton" onclick="getCharacters()"> Show Characters </button>
+
+                <button type="button" id="addCharacterButton" onclick="addCharacter()"> Add New Character</button>
+    
+                <button type="button" id="updateCharacterButton" onclick="updateCharacter()"> Update a Character</button>
+                
+                <button type="button" id="deleteCharacterButton" onclick="deleteCharacter()"> Delete a Character</button>
             </div>
+            
         </header>
-    </div>
+
+        
+
+        <div id="CharactersList"></div>
+
+        
+
+        
+        <form id="addCharacterForm" style="display: none;">
+            <label for="id">ID:</label>
+            <input type="text" id="id" name="id"><br>
+            
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br>
+            
+            <label for="image">Image:</label>
+            <input type="text" id="image" name="image"><br>
+            
+            <label for="species">Species:</label>
+            <input type="text" id="species" name="species"><br>
+            
+            <label for="gender">Gender:</label>
+            <input type="text" id="gender" name="gender"><br>
+            
+            <label for="origin">Origin:</label>
+            <input type="text" id="origin" name="origin"><br>
+            
+            <label for="status">Status:</label>
+            <input type="text" id="status" name="status"><br>
+            
+            <label for="type">Type:</label>
+            <input type="text" id="type" name="type"><br>
+            
+            <label for="created">Created:</label>
+            <input type="text" id="created" name="created"><br>
+            
+            <input type="submit" value="Submit">
+        </form>
+
+</body>
+
+<script>
+
+    async function getCharacters() {
+        const container = document.getElementById("CharactersList")
+        const showButton = document.getElementById("showCharactersButton")
+
+        if(!container.hasChildNodes()) {
+            
+            const response = await fetch('http://localhost:3000/getCharacters');
+            const characters = await response.json();
+            await characters.map((character) => {
+            let image = document.createElement('img')
+            image.setAttribute("src", character.image)
+            container.appendChild(image)
+            let name = document.createElement("p")
+            name.innerHTML = character.name
+            container.appendChild(name)
+            let id = document.createElement("p")
+            id.innerHTML = character.id
+            container.appendChild(id)
+            
+        })
+            showButton.innerHTML = "Hide Characters"
+        }else{
+            showButton.innerHTML = "Show Characters"
+            container.innerHTML = ""
+
+        }
+    }
 
     
-</body>
+    async function addNewCharacter() {
+
+    }
+
+    async function getCharacterID() {
+
+    }
+
+    async function updateCharacter() {
+
+    }
+
+    async function deleteCharacter() {
+        const CharacterID = document.getElementById("characterConsult").value
+        if(CharacterID) {
+            
+            const response = await fetch(`http://localhost:3000/deleteCharacters/${CharacterID}`, {method: "post"})
+            const message = await response.json()
+            alert(message.message)
+            document.getElementById("characterConsult").value = ""
+        }
+    }
+
+
+</script>
 </html>
+

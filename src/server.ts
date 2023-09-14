@@ -1,17 +1,26 @@
 import 'dotenv/config'
-import { setCharacters } from './database'
+import { getCharacters, setCharacters, deleteCharacters } from './database'
 
 const express = require('express')
 const app = express()
 const port = 3000
+const cors = require("cors")
 
 
-app.get('/', async (req, res) => {
-  res.send(await setCharacters())
+app.use(cors())
+
+
+app.get('/getCharacters', async (req, res) => {
+  res.send(await getCharacters())
+})
+
+app.post('/deleteCharacters/:id', async (req, res) => {
+  res.send({message: await deleteCharacters(req.params.id)})
 })
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-  fetch 
+  fetch
+  setCharacters()
 })
 
