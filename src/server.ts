@@ -18,6 +18,10 @@ app.post('/deleteCharacters/:id', async (req, res) => {
   res.send({message: await deleteCharacters(req.params.id)})
 })
 
+// app.update('/addNewCharacters/:id',async (req:res) => {
+  
+// })
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
   fetch

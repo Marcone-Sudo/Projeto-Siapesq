@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css\style.css">
     <link rel="assets" href=".\assets\logo.svg" type="image/x-icon">
-    <!-- <script src="./ts/app.ts"></script> -->
 
     <title>Rick Morty - Characters</title>
 </head>
@@ -33,9 +32,8 @@
         <div id="CharactersList"></div>
 
         
-
         
-        <form id="addCharacterForm" style="display: none;">
+        <form id="addCharacterForm" style="display: none;" onsubmit="addCharacter(event)">
             <label for="id">ID:</label>
             <input type="text" id="id" name="id"><br>
             
@@ -99,7 +97,32 @@
     }
 
     
-    async function addNewCharacter() {
+    async function addNewCharacter(event) {
+        event.preventDefault();
+
+        // Recuperando os dados do furmulário
+        const id = document.getElementById("id").value;
+        const name = document.getElementById("name").value;
+        const image = document.getElementById("image").value;
+        const species = document.getElementById("species").value;
+        const gender = document.getElementById("gender").value;
+        const origin = document.getElementById("origin").value;
+        const status = document.getElementById("status").value;
+        const type = document.getElementById("type").value;
+        const created = document.getElementById("created").value;
+
+        // Objeto com os dados do formulário
+        const dadosPersonagem = {
+            id,
+            name,
+            image,
+            species,
+            gender,
+            origin,
+            status,
+            type,
+            created
+        }
 
     }
 

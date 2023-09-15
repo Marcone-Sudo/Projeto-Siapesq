@@ -19,6 +19,7 @@ export const getCharacters = async () => {
     }
 }
 
+// SHOW
 export const setCharacters = async () => {
     const response = await fetch('https://rickandmortyapi.com/api/character');
     const characters = await response.json();
@@ -70,6 +71,7 @@ export const setCharacters = async () => {
     return characters.results;
 };
 
+// DELETE
 export const deleteCharacters = async (id: number) => {
     try {
         const client = new pg.Client({
@@ -107,6 +109,47 @@ export const deleteCharacters = async (id: number) => {
     } catch (error) {
         console.error(error);
     }
-    
+
 } 
- 
+
+export const addNewCharacters = async (dataCharacter) => {
+    try {
+        const client = new pg.Client({
+            user: process.env.PGUSER,
+            host: process.env.PGHOST,
+            database: process.env.PGDATABASE,
+            password: process.env.PGPASSWORD,
+            port: process.env.PGPORT
+        });
+
+        await client.connect();
+
+        try {
+            
+            const resposta = await fetch('http://localhost:3000/addNewCharacter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataCharacter)
+            });
+    
+            if (resposta.ok) {
+                alert('Personagem adicionado ao banco de dados.');
+            } else {
+                alert('Erro ao adicionar o personagem ao banco de dados.');
+            }
+
+            await client.query('COMMIT');
+            
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            await client.end();
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+} 
