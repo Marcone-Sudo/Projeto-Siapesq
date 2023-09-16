@@ -112,7 +112,9 @@ export const deleteCharacters = async (id: number) => {
 
 } 
 
-export const addNewCharacters = async (dataCharacter) => {
+//ADD NEW CHARACTER
+export const addNewCharacters = async (character) => {
+
     try {
         const client = new pg.Client({
             user: process.env.PGUSER,
@@ -124,20 +126,19 @@ export const addNewCharacters = async (dataCharacter) => {
 
         await client.connect();
 
+        let queryResult
+
         try {
-            
-            const resposta = await fetch('http://localhost:3000/addNewCharacter', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dataCharacter)
-            });
-    
-            if (resposta.ok) {
-                alert('Personagem adicionado ao banco de dados.');
+            await client.query('BEGIN');
+            const result = await client.query(
+                "INSERT INTO characters (name, image, species, gender, origin, status, type, created) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+                [character.name, character.image, character.species, character.gender, character.origin.name, character.status, character.type, character.created]
+            );
+
+            if (result.rowCount === 1) {
+                queryResult = `O personagem foi foi adicionado com sucesso.`
             } else {
-                alert('Erro ao adicionar o personagem ao banco de dados.');
+                queryResult = `Erro ao cadastras, tente novamente.`
             }
 
             await client.query('COMMIT');
@@ -147,9 +148,52 @@ export const addNewCharacters = async (dataCharacter) => {
             throw error;
         } finally {
             await client.end();
+            return(queryResult)
         }
     } catch (error) {
         console.error(error);
     }
+} 
 
+export const updateCharacters = async (character) => {
+
+    try {
+        const client = new pg.Client({
+            user: process.env.PGUSER,
+            host: process.env.PGHOST,
+            database: process.env.PGDATABASE,
+            password: process.env.PGPASSWORD,
+            port: process.env.PGPORT
+        });
+
+        await client.connect();
+
+        let queryResult
+
+        try {
+            await client.query('BEGIN');
+            const result = await client.query(
+                "UPDATE characters SET name = $2, image = $3, species = $4, gender = $5, origin = $6, status = $7, type = $8, created = $9 WHERE id = $1",
+                [character.id, character.name, character.image, character.species, character.gender, character.origin.name, character.status, character.type, character.created]
+              );
+              console.log(result)
+
+            if (result.rowCount === 1) {
+                queryResult = `O personagem foi foi alterado com sucesso.`
+            } else {
+                queryResult = `Erro ao alterar, tente novamente.`
+            }
+
+            await client.query('COMMIT');
+            
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            await client.end();
+            return(queryResult)
+        }
+    } catch (error) {
+        console.error(error);
+    }
 } 

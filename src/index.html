@@ -18,24 +18,21 @@
             <div class="button-list">
                 <button type="button" id="showCharactersButton" onclick="getCharacters()"> Show Characters </button>
 
-                <button type="button" id="addCharacterButton" onclick="addCharacter()"> Add New Character</button>
+                <button type="button" id="addCharacterButton" onclick="showForm()"> Add New Character</button>
     
-                <button type="button" id="updateCharacterButton" onclick="updateCharacter()"> Update a Character</button>
+                <button type="button" id="updateCharacterButton" onclick="showFormId()"> Update a Character</button>
                 
                 <button type="button" id="deleteCharacterButton" onclick="deleteCharacter()"> Delete a Character</button>
             </div>
             
         </header>
 
-        
-
         <div id="CharactersList"></div>
+                
+        <form id="addCharacterForm" style="display: none;">
+            <label for="id" style="display: none;" id="label">ID:</label>
 
-        
-        
-        <form id="addCharacterForm" style="display: none;" onsubmit="addCharacter(event)">
-            <label for="id">ID:</label>
-            <input type="text" id="id" name="id"><br>
+            <input type="text" id="id" name="id" style="display: none;"><br>
             
             <label for="name">Name:</label>
             <input type="text" id="name" name="name"><br>
@@ -59,9 +56,10 @@
             <input type="text" id="type" name="type"><br>
             
             <label for="created">Created:</label>
-            <input type="text" id="created" name="created"><br>
+            <input type="date" id="created" name="created"><br>
             
-            <input type="submit" value="Submit">
+            <input type="button" value="ADD" onclick="addNewCharacter(event)" >
+            <input type="button" value="UPDATE" onclick="updateCharacter(event)" >
         </form>
 
 </body>
@@ -101,37 +99,102 @@
         event.preventDefault();
 
         // Recuperando os dados do furmulário
-        const id = document.getElementById("id").value;
-        const name = document.getElementById("name").value;
-        const image = document.getElementById("image").value;
-        const species = document.getElementById("species").value;
-        const gender = document.getElementById("gender").value;
-        const origin = document.getElementById("origin").value;
-        const status = document.getElementById("status").value;
-        const type = document.getElementById("type").value;
-        const created = document.getElementById("created").value;
+        const name = document.getElementById("name").value
+        const image = document.getElementById("image").value
+        const species = document.getElementById("species").value
+        const gender = document.getElementById("gender").value
+        const origin = document.getElementById("origin").value
+        const status = document.getElementById("status").value
+        const type = document.getElementById("type").value
+        const created = document.getElementById("created").value
 
-        // Objeto com os dados do formulário
+        //Objeto com os dados do formulário
         const dadosPersonagem = {
-            id,
-            name,
-            image,
-            species,
-            gender,
-            origin,
-            status,
-            type,
-            created
+            name: name,
+            image: image,
+            species: species,
+            gender: gender,
+            origin: origin,
+            status: status,
+            type: type,
+            created: created
         }
 
+        const response = await fetch('http://localhost:3000/addNewCharacters', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dadosPersonagem)
+        })
+        const message = await response.json()
+        alert(message.message)
+        
     }
 
-    async function getCharacterID() {
+    async function showForm() {
+        const form = document.getElementById("addCharacterForm")
+        if(form.style.display == "none") {
+            form.style.display = "block"
+        }else {
+            form.style.display = "none"
+        }
+    }
 
+    async function showFormId() {
+        const form = document.getElementById("addCharacterForm")
+        const id = document.getElementById("id")
+        const label = document.getElementById("label")
+        if(form.style.display == "none") {
+            form.style.display = "block"
+            id.style.display = "block"
+            label.style.display = "block"
+        }else {
+            form.style.display = "none"
+            id.style.display = "none"
+            label.style.display = "none"
+        }
     }
 
     async function updateCharacter() {
+        event.preventDefault();
 
+        // Recuperando os dados do furmulário
+
+        const id = document.getElementById("id").value
+        const name = document.getElementById("name").value
+        const image = document.getElementById("image").value
+        const species = document.getElementById("species").value
+        const gender = document.getElementById("gender").value
+        const origin = document.getElementById("origin").value
+        const status = document.getElementById("status").value
+        const type = document.getElementById("type").value
+        const created = document.getElementById("created").value
+
+        //Objeto com os dados do formulário
+        const dadosPersonagem = {
+            id: id,
+            name: name,
+            image: image,
+            species: species,
+            gender: gender,
+            origin: origin,
+            status: status,
+            type: type,
+            created: created
+        }
+
+        const response = await fetch('http://localhost:3000/updateCharacters', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dadosPersonagem)
+        })
+        const message = await response.json()
+        alert(message.message)
     }
 
     async function deleteCharacter() {
