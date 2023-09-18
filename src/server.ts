@@ -11,7 +11,6 @@ const bodyParser = require('body-parser')
 app.use(cors())
 app.use(bodyParser.json())
 
-
 app.get('/getCharacters', async (req, res) => {
   res.send(await getCharacters())
 })
@@ -32,7 +31,6 @@ app.post('/updateCharacters', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-  fetch
   setCharacters()
 })
 
