@@ -38,6 +38,26 @@ export const setCharacters = async () => {
         try {
             await client.query('BEGIN');
 
+            //const res = await client.query(`CREATE TABLE IF NOT EXISTS characters (id SERIAL PRIMARY KEY, name TEXT NOT NULL, image TEXT, species TEXT, gender TEXT, origin TEXT, status TEXT, type TEXT, created TIMESTAMP)`);
+
+
+            const createTableQuery = `
+                CREATE TABLE IF NOT EXISTS characters (
+                id SERIAL PRIMARY KEY,
+                name TEXT NOT NULL,
+                image TEXT,
+                species TEXT,
+                gender TEXT,
+                origin TEXT,
+                status TEXT,
+                type TEXT,
+                created TIMESTAMP
+            )
+        `;
+
+const res = await client.query(createTableQuery);
+
+
             for (const character of characters.results) {
 
                 // Verifica se o personagem já existe no banco de dados
