@@ -156,9 +156,9 @@ export const addNewCharacters = async (character) => {
             );
 
             if (result.rowCount === 1) {
-                queryResult = `O personagem foi foi adicionado com sucesso.`
+                queryResult = `O personagem foi adicionado com sucesso.`
             } else {
-                queryResult = `Erro ao cadastras, tente novamente.`
+                queryResult = `Erro ao cadastrar, tente novamente.`
             }
 
             await client.query('COMMIT');
@@ -174,6 +174,7 @@ export const addNewCharacters = async (character) => {
         console.error(error);
     }
 } 
+
 
 export const updateCharacters = async (character) => {
 

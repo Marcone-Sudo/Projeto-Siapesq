@@ -75,30 +75,55 @@
             const response = await fetch('http://localhost:3000/getCharacters');
             const characters = await response.json();
             await characters.map((character) => {
+
             let image = document.createElement('img')
             image.setAttribute("src", character.image)
             container.appendChild(image)
+
             let name = document.createElement("p")
-            name.innerHTML = character.name
+            name.innerHTML = "Name: " + character.name
             container.appendChild(name)
+
             let id = document.createElement("p")
-            id.innerHTML = character.id
+            id.innerHTML = "Character: " + character.id
             container.appendChild(id)
+
+            let gender = document.createElement("p")
+            gender.innerHTML = "Gender: " + character.gender
+            container.appendChild(gender)
+
+            let species = document.createElement("p")
+            species.innerHTML = "Species: " + character.species
+            container.appendChild(species)
+
+            let origin = document.createElement("p")
+            origin.innerHTML = "Origin: " + character.origin
+            container.appendChild(origin)
+
+            let status = document.createElement("p")
+            status.innerHTML = "Status: " + character.status
+            container.appendChild(status)
             
+            let type = document.createElement("p")
+            type.innerHTML = "Type: " + character.type
+            container.appendChild(type)
+
+            let created = document.createElement("p")
+            created.innerHTML = "Created: " + character.created
+            container.appendChild(created)
+
         })
             showButton.innerHTML = "Hide Characters"
         }else{
             showButton.innerHTML = "Show Characters"
             container.innerHTML = ""
-
         }
     }
-
     
     async function addNewCharacter(event) {
         event.preventDefault();
 
-        // Recuperando os dados do furmulário
+        //Recuperando os dados do furmulário
         const name = document.getElementById("name").value
         const image = document.getElementById("image").value
         const species = document.getElementById("species").value
